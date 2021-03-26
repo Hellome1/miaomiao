@@ -1,5 +1,5 @@
 <template>
-  <keep-alive>
+  <keep-alive exclude="Cinema">
     <router-view/>
   </keep-alive>
 </template>
