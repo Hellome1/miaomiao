@@ -1,0 +1,81 @@
+<template>
+  <div id="main">
+    <Header title="喵喵电影"/>
+    <div id="content">
+      <div class="movie_menu">
+        <router-link tag="div" to="/movie/city" class="city_name">
+          <span>{{this.$store.state.city}}</span><i class="iconfont icon-lower-triangle"></i>
+        </router-link>
+        <div class="hot_switch">
+          <router-link tag="div" to="/movie/nowPlaying" class="hot_item active">正在热映</router-link>
+          <router-link tag="div" to="/movie/comingSoon" class="hot_item">即将上映</router-link>
+        </div>
+        <router-link tag="div" to="/movie/search" class="search_entry">
+          <i class="iconfont icon-sousuo">搜索</i>
+        </router-link>
+      </div>
+      <keep-alive>
+        <router-view />
+      </keep-alive>
+    </div>
+    <Tabbar />
+  </div>
+</template>
+
+<script>
+import Header from '@/components/Header'
+import Tabbar from '@/components/Tabbar'
+
+export default {
+  name: 'Movie',
+  components: {
+    Header,
+    Tabbar
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+#content {
+  height: 636px;
+  position: relative;
+  margin-top: 50px;
+  .movie_menu {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    z-index: 1;
+    top: 50px;
+    .city_name {
+      flex-grow: 1;
+      font-weight: bold;
+    }
+    .city_name.router-link-active {
+      color: #f03d37;
+    }
+    .hot_switch {
+      flex-grow: 1;
+      display: flex;
+      justify-content: space-evenly;
+      .hot_item {
+        font-weight: bold;
+      }
+      .hot_item.router-link-active {
+        color: #f03d37;
+        border-bottom: 2px solid #f03d37;
+      }
+    }
+    .search_entry {
+      flex-grow: 1;
+    }
+    .search_entry.router-link-active {
+      color: #f03d37;
+    }
+  }
+}
+</style>
