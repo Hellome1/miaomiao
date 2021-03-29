@@ -1,20 +1,22 @@
 <template>
-  
-  <div class="movie_body" v-if="comingList.length">
-    <ul>
-      <li v-for="data in comingList" :key="data.fimlId">
-        <div class="pic_show">
-          <img :src="data.poster" alt="">
-        </div>
-        <div class="info_list">
-          <h2>{{data.name}}</h2>
-          <p>观众评分 <span class="grade">暂无评分</span></p>
-          <p>主演：{{data.actors | actorfilter}}</p>
-          <p>{{data.category}}</p>
-        </div>
-        <div class="btn_mall">预售</div>
-      </li>
-    </ul>
+  <div class="movie_body">
+    <Loading v-if="!comingList.length" />
+    <Scroller v-else>
+      <ul>
+        <li v-for="data in comingList" :key="data.fimlId">
+          <div class="pic_show">
+            <img :src="data.poster" alt="">
+          </div>
+          <div class="info_list">
+            <h2>{{data.name}}</h2>
+            <p>观众评分 <span class="grade">暂无评分</span></p>
+            <p>主演：{{data.actors | actorfilter}}</p>
+            <p>{{data.category}}</p>
+          </div>
+          <div class="btn_mall">预售</div>
+        </li>
+      </ul>
+    </Scroller>
   </div>
 </template>
 
@@ -23,12 +25,18 @@ export default {
   name: 'ComingSoon',
   data () {
     return {
-      comingList: []
+      comingList: [],
+      prevCityId: -1,
+      cityId: 110100
     }
   },
-  mounted () {
+  activated () {
+    this.cityId = this.getCookie('cityId') || 110100
+
+    if (this.prevCityId == this.cityId) return 
+
     this.axios({
-      url: 'https://m.maizuo.com/gateway?cityId=110100&pageNum=1&pageSize=10&type=2&k=9956508',
+      url: `https://m.maizuo.com/gateway?cityId=${this.cityId}&pageNum=1&pageSize=10&type=2&k=9956508`,
       headers: {
         'X-Client-Info': '{"a":"3000","ch":"1002","v":"5.0.4","e":"1615359311169573898780673"}',
         'X-Host': 'mall.film-ticket.film.list'
@@ -36,13 +44,26 @@ export default {
     }).then(res => {
       console.log(res.data)
       this.comingList = res.data.data.films
+      this.prevCityId = this.cityId
     })
+  },
+  methods: {
+    getCookie (name) {
+      var cookieStr = document.cookie
+      var cookieArr = cookieStr.split('; ')
+      for(let i = 0; i < cookieArr.length; i++){
+        if (cookieArr[i].split('=')[0] === name) {
+          return cookieArr[i].split('=')[1]
+        }
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .movie_body {
+  height: 100%;
   ul {
     li {
       display: flex;

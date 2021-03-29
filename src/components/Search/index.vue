@@ -8,7 +8,7 @@
     </div>
     <div class="search_result">
       <h3>电影/电视/综艺</h3>
-      <ul v-if="movies.length">
+      <ul  v-if="movies.length">
         <li v-for="movie in movies" :key="movie.id">
           <div class="img">
             <img :src="movie.img | setWH('90.120')" alt="">

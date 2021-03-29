@@ -1,31 +1,36 @@
 <template>
-  <div class="city_body" v-if="cityList.length">
-    <div class="city_list">
-      <div class="city_hot">
-        <h2>热门城市</h2>
-        <ul class="clearfix">
-          <li v-for="data in hotList" :key="data.filmId">
-            {{data.name}}
-          </li>
-        </ul>
-      </div>
-      <div class="city_sort" ref="city_sort">
-        <div v-for="data in cityList" :key="data.index">
-          <h2>{{data.index}}</h2>
-          <ul>
-            <li v-for="dt in data.cities" :key="dt.cityId" @click="switchCinema(dt.cityId, dt.name)">
-              {{dt.name}}
-            </li>
-          </ul>
+  <div class="city_body">
+    <Loading  v-if="!cityList.length" />
+    <div v-else class="city_list">
+      <Scroller ref="city_list_sc">
+        <div>
+          <div class="city_hot">
+            <h2>热门城市</h2>
+            <ul class="clearfix">
+              <li v-for="data in hotList" :key="data.filmId">
+                {{data.name}}
+              </li>
+            </ul>
+          </div>
+          <div class="city_sort" ref="city_sort">
+            <div v-for="data in cityList" :key="data.index">
+              <h2>{{data.index}}</h2>
+              <ul>
+                <li v-for="dt in data.cities" :key="dt.cityId" @click="switchCinema(dt.cityId, dt.name)">
+                  {{dt.name}}
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="city_index" @touchstart="start">
-        <ul>
-          <li v-for="(data, index) in cityList" :key="'Index' + data.index" :index="index">
-            {{data.index}}
-          </li>
-        </ul>
-      </div>
+      </Scroller>
+    </div>
+    <div class="city_index" @touchstart="start">
+      <ul>
+        <li v-for="(data, index) in cityList" :key="'Index' + data.index" :index="index">
+          {{data.index}}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -99,7 +104,8 @@ export default {
     },
     handleToIndex(index){
       var h2 = this.$refs.city_sort.getElementsByTagName('h2')
-      this.$refs.city_sort.parentNode.scrollTop = h2[index].offsetTop
+      // this.$refs.city_sort.parentNode.parentNode.parentNode.scrollTop = h2[index].offsetTop
+      this.$refs.city_list_sc.toScrollTop(-h2[index].offsetTop)
     },
     start(e){
       var targetX = e.targetTouches[0].clientX
@@ -188,19 +194,19 @@ export default {
         }
       }
     }
-    .city_index {
-      position: fixed;
-      right: 0;
-      top: 51px;
-      height: 689px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: white;
-      width: 20px;
-      li {
-        text-align: center;
-      }
+  }
+  .city_index {
+    position: fixed;
+    right: 0;
+    top: 51px;
+    height: 689px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    width: 20px;
+    li {
+      text-align: center;
     }
   }
 }

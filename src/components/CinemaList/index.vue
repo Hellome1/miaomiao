@@ -1,21 +1,24 @@
 <template>
   <div class="cinema_body">
-    <ul v-if="cinemas.length">
-      <li v-for="data in cinemas" :key="data.cinemaId">
-        <div>
-          <span>{{data.name}}</span>
-          <span class="q"><span class="price">{{data.lowPrice / 100}}</span> 元起</span>
-        </div>
-        <div class="address">
-          <span>{{data.address}}</span>
-          <span>{{data.Distance | Distance}}</span>
-        </div>
-        <div class="card">
-          <div>小吃</div>
-          <div>折扣卡</div>
-        </div>
-      </li>
-    </ul>
+    <Loading  v-if="!cinemas.length" />
+    <Scroller v-else>
+      <ul>
+        <li v-for="data in cinemas" :key="data.cinemaId">
+          <div>
+            <span>{{data.name}}</span>
+            <span class="q"><span class="price">{{data.lowPrice / 100}}</span> 元起</span>
+          </div>
+          <div class="address">
+            <span>{{data.address}}</span>
+            <span>{{data.Distance | Distance}}</span>
+          </div>
+          <div class="card">
+            <div>小吃</div>
+            <div>折扣卡</div>
+          </div>
+        </li>
+      </ul>
+    </Scroller>
   </div>
 </template>
 
@@ -25,16 +28,20 @@ export default {
   data () {
     return {
       cityId: 110100,
-      cinemas: []
+      cinemas: [],
+      prevCityId: -1
     }
   },
-  mounted () {
+  activated () {
     var cityId = this.getCookie('cityId')
-    console.log(cityId)
 
     if (cityId) {
       this.cityId = cityId
     }
+
+    if (this.prevCityId == this.cityId) return
+    
+    console.log(cityId)
 
     this.axios({
       url: `https://m.maizuo.com/gateway?cityId=${this.cityId}&ticketFlag=1&k=8965993`,
@@ -44,6 +51,7 @@ export default {
       }
     }).then(res => {
       this.cinemas = res.data.data.cinemas
+      this.prevCityId = this.cityId
     })
   },
   methods: {
@@ -64,6 +72,7 @@ export default {
 .cinema_body {
   flex: 1;
   overflow: auto;
+  .wrapper { height: 100%;}
   ul {
     padding: 20px;
     li {
