@@ -45,6 +45,7 @@ export default {
     }
   },
   mounted () {
+    /* https://m.maoyan.com/dianying/cities.json */
     this.axios({
       url: 'https://m.maizuo.com/gateway?k=3697882',
       headers: {
@@ -55,6 +56,10 @@ export default {
       // console.log(res.data)
       var newData = res.data.data.cities
       this.handleCityList(newData)
+    })
+
+    this.axios('/dianying/cities.json').then(res => {
+      console.log(res.data)
     })
   },
   methods: {
