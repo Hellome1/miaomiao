@@ -5,11 +5,11 @@
       <ul>
         <li>{{pullDownMsg}}</li>
         <li v-for="data in datalist" :key="data.filmId">
-          <div class="pic_show" @tap="handle">
+          <div class="pic_show" @tap="handleToDetail(data.filmId)">
             <img :src="data.poster" alt="">
           </div>
           <div class="info_list">
-            <h2>{{data.name}}</h2>
+            <h2 @tap="handleToDetail(data.filmId)">{{data.name}}</h2>
             <p>观众评分 <span class="grade">{{data.grade || '暂无评分'}}</span></p>
             <p>主演：{{data.actors | actorfilter}}</p>
             <p>{{data.category}}</p>
@@ -88,8 +88,9 @@ export default {
       })
   },
   methods: {
-    handle () {
-      console.log('taped')
+    handleToDetail (filmId) {
+      // console.log(filmId)
+      this.$router.push('/movie/detail/1/' + filmId)
     },
     handleToScroll (pos) {
       if (pos.y > 30) {

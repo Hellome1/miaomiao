@@ -4,11 +4,11 @@
     <Scroller v-else>
       <ul>
         <li v-for="data in comingList" :key="data.fimlId">
-          <div class="pic_show">
+          <div class="pic_show" @tap="handleToDetail(data.filmId)">
             <img :src="data.poster" alt="">
           </div>
           <div class="info_list">
-            <h2>{{data.name}}</h2>
+            <h2 @tap="handleToDetail(data.filmId)">{{data.name}}</h2>
             <p>观众评分 <span class="grade">暂无评分</span></p>
             <p>主演：{{data.actors | actorfilter}}</p>
             <p>{{data.category}}</p>
@@ -56,6 +56,9 @@ export default {
           return cookieArr[i].split('=')[1]
         }
       }
+    },
+    handleToDetail (filmId) {
+      this.$router.push('/movie/detail/2/' + filmId)
     }
   }
 }
