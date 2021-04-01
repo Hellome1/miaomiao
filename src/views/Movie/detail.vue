@@ -5,7 +5,7 @@
     </Header>
     <div id="content" class="contentDetail" v-if="filminfo">
       <div class="detail_list">
-        <div class="detail_list_bg"></div>
+        <div class="detail_list_bg" :style="{'background': 'url(' + filminfo.poster + ') 0 40%'}"></div>
         <div class="detail_list_filter"></div>
         <div class="detail_list_content">
           <div class="detail_list_img">
@@ -98,7 +98,6 @@ export default {
       .detail_list_bg {
         width: 100%;
         height: 100%;
-        background: url(/images/movie_1.jpg) 0 40%;
         filter: blur(20px)
       }
       .detail_list_filter {

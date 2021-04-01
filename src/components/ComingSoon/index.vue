@@ -82,7 +82,7 @@ export default {
         }
       }
       .info_list {
-        width: 222px;
+        width: 210px;
         p {
           width: 100%;
           white-space: nowrap;
